@@ -1,0 +1,36 @@
+local allowedUserId = 5862904456 -- Replace with your UserId
+local loadstringLink = "https://pastebin.com/raw/KNiJUG16" -- Replace with your loadstring link
+
+local Players = game:GetService("Players")
+
+-- When a player joins the game
+Players.PlayerAdded:Connect(function(player)
+    if player.UserId ~= allowedUserId then
+        -- Kick the player if they're not allowed
+        player:Kick("You are not authorized to use this script.")
+    else
+        -- Run your loadstring for the allowed player
+        local success, errorMessage = pcall(function()
+            loadstring(game:HttpGet(loadstringLink))()
+        end)
+
+        if not success then
+            warn("Failed to load the script: " .. errorMessage)
+        end
+    end
+end)
+
+-- Ensure this runs for any players already in the game (in case of testing in Studio)
+for _, player in ipairs(Players:GetPlayers()) do
+    if player.UserId ~= allowedUserId then
+        player:Kick("You are not authorized to use this script.")
+    else
+        local success, errorMessage = pcall(function()
+            loadstring(game:HttpGet(loadstringLink))()
+        end)
+
+        if not success then
+            warn("Failed to load the script: " .. errorMessage)
+        end
+    end
+end
